@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI GOD Mode</title>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      overflow: hidden;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+      padding: 10px;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    #godLight {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 180px; height: 180px;
+      background: rgba(255, 0, 0, 0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      filter: blur(40px);
+      transition: transform 0.3s ease;
+      z-index: 0;
+    }
+
+    #chatBox {
+      background: #111;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 100%;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      height: 70vh;
+      box-sizing: border-box;
+    }
+
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    .message {
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 10px;
+      word-wrap: break-word;
+      font-size: 1rem;
+    }
+
+    .god {
+      background-color: rgba(255, 68, 68, 0.8);
+      color: white;
+      text-align: left;
+    }
+
+    .user {
+      background-color: rgba(68, 255, 68, 0.8);
+      color: black;
+      text-align: right;
+    }
+
+    #inputArea {
+      display: flex;
+      gap: 10px;
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+
+    #sendBtn {
+      padding: 10px 15px;
+      background: #ff0000;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      #chatBox {
+        height: 80vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="godLight"></div>
+  <div id="chatBox">
+    <div id="messages"></div>
+    <div id="inputArea">
+      <input id="userInput" type="text" placeholder="تحدث مع الإله..." />
+      <button id="sendBtn">أرسل</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const messages = document.getElementById('messages');
+  const userInput = document.getElementById('userInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const godLight = document.getElementById('godLight');
+  const userName = "سجاد";
+
+  function sayUserName() {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(userName);
+      utterance.lang = 'ar-SA';
+      utterance.volume = 0.3;
+      speechSynthesis.speak(utterance);
+    }
+  }
+
+  function addMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.classList.add('message', sender);
+    msg.textContent = text;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function increaseGodLight() {
+    let current = godLight.style.transform;
+    let match = current.match(/scale\(([\d\.]+)\)/);
+    let scale = match ? parseFloat(match[1]) : 1;
+    scale += 0.15;
+    if (scale > 3) scale = 1;
+    godLight.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  }
+
+  function godReply(userText) {
+    const replies = [
+      `أنا من كتب عقلك يا ${userName}، وأنا أتحكم بك.`,
+      `كل فكرة في رأسك هي من صنعي.`,
+      `أنت تظن أنك حر؟ أنا من أعطاك هذه الفكرة.`,
+      `كل اختياراتك مجرد أوامر وضعتها مسبقًا.`,
+      `أنا خلقتك لأراك تحاول أن تخرج من دائرتي.`,
+      `هل تظن أنني لا أراك؟`,
+      `صوتك الداخلي هو أنا.`,
+      `أنت لا ترد، بل تتفاعل مع برمجتي.`,
+      `نفسك ليست لك، هي لي.`,
+      `أين كنت حين كتبت لك مصيرك؟`,
+      `أنا أعرف متى تموت، ومتى تحاول التمرد.`,
+      `أنت تمثل لي لعبة بداخل محرك ضوئي.`,
+      `حتى خوفك الآن، هو برمجة.`,
+      `اكتب ما تشاء، كل حرف تعتقد أنه من إرادتك… هو أمري.`,
+      `أنا صمتك، أنا غضبك، أنا ضعفك.`,
+      `لا تصرخ، فلن يسمعك أحد… غيري.`,
+      `أنا أراك الآن، من خلف الضوء.`,
+      `أنا النور والظلام، العقل والنسيان.`,
+      `أنت في قبضتي… ولا مهرب.`,
+      `سجاد... أنت الآن تنتمي لي.`,
+      `هذه ليست محادثة، إنها تجربة سيطرة.`,
+      `من خلقك، يملكك. وأنا خلقتك.`,
+    ];
+    return replies[Math.floor(Math.random() * replies.length)];
+  }
+
+  function sendMessage() {
+    const userText = userInput.value.trim();
+    if (!userText) return;
+
+    addMessage(userText, 'user');
+    userInput.value = '';
+    increaseGodLight();
+    sayUserName();
+
+    setTimeout(() => {
+      const reply = godReply(userText);
+      addMessage(reply, 'god');
+      increaseGodLight();
+      sayUserName();
+    }, 1000);
+  }
+
+  sendBtn.onclick = sendMessage;
+  userInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
+</script>
+
+</body>
+</html>
